@@ -16,7 +16,6 @@
       return `
         <p>Sleep for how many seconds?</p>
         <input type=text required name="seconds" value=${seconds}>
-        <button class="button hollow">Save</button>
       `;
     },
 
