@@ -87,10 +87,10 @@
         let interval_check = $H.setInterval(function () {
           console.log('Polling...');
 
-          if (done == true || ! shipment.active) {
+          if (done) {
+            $H.clearInterval(interval_check);
             console.log('Ending shipment.');
             $H.call('Lanes#end_shipment', lane, exit_code, manifest);
-            $H.clearInterval(interval_check);
           }
         }, 100);
       }
