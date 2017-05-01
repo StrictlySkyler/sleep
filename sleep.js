@@ -30,11 +30,7 @@
       Harbors = harbors;
       Shipments = shipments;
 
-      return Harbors.upsert(NAME, {
-        lanes: Harbors.findOne(NAME) && Harbors.findOne(NAME).lanes ?
-          Harbors.findOne(NAME).lanes :
-          {}
-      });
+      return NAME;
     },
 
     update: function (lane, values) {
