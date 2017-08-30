@@ -34,16 +34,8 @@
     },
 
     update: function (lane, values) {
-      let harbor = Harbors.findOne(lane.type);
-
       if (values.seconds) values.seconds = parseInt(values.seconds, 10);
-
-      harbor.lanes[lane._id] = {
-        manifest: values
-      };
-
-      Harbors.update(harbor._id, harbor);
-
+      values.seconds = values.seconds || false;
       if (typeof values.seconds == 'number') return true;
 
       return false;
