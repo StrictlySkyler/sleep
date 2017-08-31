@@ -43,10 +43,7 @@
 
     work: function (lane, manifest) {
       let exit_code = 1;
-      let shipment = Shipments.findOne({
-        start: manifest.shipment_start_date,
-        lane: lane._id
-      });
+      let shipment = Shipments.findOne({ _id: manifest.shipment_id });
 
       if (typeof manifest.seconds != 'number') {
         throw new TypeError(
@@ -63,24 +60,11 @@
         ;
         let done = false;
 
-        console.log('Sleeping for', seconds, 'seconds.');
-
-        setTimeout(function () {
-          console.log('Done.');
+        $H.setTimeout(function () {
           exit_code = 0;
-          done = true;
+          $H.call('Lanes#end_shipment', lane, exit_code, manifest);
         }, seconds * 1000);
 
-        //TODO: make this customizable
-        let interval_check = $H.setInterval(function () {
-          console.log('Polling...');
-
-          if (done) {
-            $H.clearInterval(interval_check);
-            console.log('Ending shipment.');
-            $H.call('Lanes#end_shipment', lane, exit_code, manifest);
-          }
-        }, 100);
       }
       catch (err) {
         console.error(err);
