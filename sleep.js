@@ -11,11 +11,35 @@
   return module.exports = {
 
     render_input: function (values) {
-      let seconds = values ? values.seconds : '';
+      values = values || {
+        seconds: 1,
+        exit_code: 0
+      };
 
       return `
         <p>Sleep for how many seconds?</p>
-        <input type=text required name="seconds" value=${seconds}>
+        <input type=text required name="seconds" value=${values.seconds}>
+        <p>Exit with:</p>
+        <label>
+          <input
+            type=radio
+            name=exit_code
+            value=0
+            required
+            ${values.exit_code == 0 ? 'checked' : ''}
+          >
+          &nbsp;Success
+        </label>
+        <label>
+          <input
+            type=radio
+            name=exit_code
+            value=1
+            required
+            ${values.exit_code == 1 ? 'checked' : ''}
+          >
+          &nbsp;Error
+        </label>
       `;
     },
 
@@ -34,6 +58,7 @@
     },
 
     update: function (lane, values) {
+      console.log(values)
       if (values.seconds) values.seconds = parseInt(values.seconds, 10);
       values.seconds = values.seconds || false;
       if (typeof values.seconds == 'number') return true;
@@ -42,7 +67,7 @@
     },
 
     work: function (lane, manifest) {
-      let exit_code = 1;
+      let exit_code = parseInt(manifest.exit_code, 10);
       let shipment = Shipments.findOne({ _id: manifest.shipment_id });
 
       if (typeof manifest.seconds != 'number') {
@@ -61,7 +86,6 @@
         let done = false;
 
         $H.setTimeout(function () {
-          exit_code = 0;
           $H.call('Lanes#end_shipment', lane, exit_code, manifest);
         }, seconds * 1000);
 
