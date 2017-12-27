@@ -44,7 +44,6 @@
     },
 
     render_work_preview: function (manifest) {
-      console.log(manifest);
       return `<p>Sleep for <span class="pre">${manifest.seconds}</span> seconds.</p>`;
     },
 
@@ -58,7 +57,6 @@
     },
 
     update: function (lane, values) {
-      console.log(values)
       if (values.seconds) values.seconds = parseInt(values.seconds, 10);
       values.seconds = values.seconds || false;
       if (typeof values.seconds == 'number') return true;
@@ -71,11 +69,11 @@
       let shipment = Shipments.findOne({ _id: manifest.shipment_id });
 
       if (typeof manifest.seconds != 'number') {
-        throw new TypeError(
-          'Invalid number of seconds to sleep!\n',
-          'The manifest must contain a "seconds" member, which must be an',
-          'integer representing the number of seconds to sleep.'
-        );
+        throw new TypeError(`
+          Invalid number of seconds to sleep!
+          The manifest must contain a "seconds" member, which must be an
+          integer representing the number of seconds to sleep.
+        `);
       }
 
       try {
