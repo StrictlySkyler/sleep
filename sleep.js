@@ -2,18 +2,14 @@
 
   'use strict';
 
-  let Lanes;
-  let Users;
-  let Harbors;
-  let Shipments;
-  const NAME = 'sleep';
+  const name = 'sleep';
 
   return module.exports = {
 
     render_input: function (values) {
       values = values || {
         seconds: 1,
-        exit_code: 0
+        exit_code: 0,
       };
 
       return `
@@ -44,17 +40,12 @@
     },
 
     render_work_preview: function (manifest) {
-      return `<p>Sleep for <span class="pre">${manifest.seconds}</span> seconds.</p>`;
+      return `
+        <p>Sleep for <span class="pre">${manifest.seconds}</span> seconds.</p>
+      `;
     },
 
-    register: function (lanes, users, harbors, shipments) { 
-      Lanes = lanes;
-      Users = users;
-      Harbors = harbors;
-      Shipments = shipments;
-
-      return NAME;
-    },
+    register: () => name,
 
     update: function (lane, values) {
       if (values.seconds) values.seconds = parseInt(values.seconds, 10);
@@ -66,7 +57,6 @@
 
     work: function (lane, manifest) {
       let exit_code = parseInt(manifest.exit_code, 10);
-      let shipment = Shipments.findOne({ _id: manifest.shipment_id });
 
       if (typeof manifest.seconds != 'number') {
         throw new TypeError(`
@@ -81,7 +71,6 @@
           get_random_seconds(manifest.seconds) :
           manifest.seconds
         ;
-        let done = false;
 
         $H.setTimeout(function () {
           $H.call('Lanes#end_shipment', lane, exit_code, manifest);
@@ -95,7 +84,7 @@
 
       return manifest;
 
-    }
+    },
 
   };
 
