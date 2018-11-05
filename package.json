@@ -1,0 +1,19 @@
+{
+  "name": "harbormaster-sleep",
+  "version": "1.0.3",
+  "description": "Wait for a number of seconds",
+  "main": "sleep.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StrictlySkyler/harbormaster-sleep.git"
+  },
+  "author": "skyler.brungardt@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StrictlySkyler/harbormaster-sleep/issues"
+  },
+  "homepage": "https://github.com/StrictlySkyler/harbormaster-sleep#readme"
+}
