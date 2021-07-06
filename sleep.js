@@ -41,7 +41,7 @@
 
     render_work_preview: function (manifest) {
       return `
-        <p>Sleep for <span class="pre">${manifest.seconds}</span> seconds.</p>
+        <p>Sleep for <span class="pre">${manifest.seconds}</span> seconds, then exit with ${manifest.exit_code ? 'an Error' : 'Success'}.</p>
       `;
     },
 
