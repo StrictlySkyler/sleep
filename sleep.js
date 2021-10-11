@@ -3,6 +3,7 @@
   'use strict';
 
   const name = 'sleep';
+  let Shipments;
 
   return module.exports = {
 
@@ -41,11 +42,18 @@
 
     render_work_preview: function (manifest) {
       return `
-        <p>Sleep for <span class="pre">${manifest.seconds}</span> seconds, then exit with ${manifest.exit_code ? 'an Error' : 'Success'}.</p>
+        <p>Sleep for <span class="pre">${
+          manifest.seconds
+        }</span> seconds, then exit with ${
+          parseInt(manifest.exit_code, 10) ? 'an Error' : 'Success'
+        }.</p>
       `;
     },
 
-    register: () => name,
+    register: (lanes, users, harbors, shipments) => {
+      Shipments = shipments;
+      return { name };
+    },
 
     update: function (lane, values) {
       if (values.seconds) values.seconds = parseInt(values.seconds, 10);
@@ -67,14 +75,19 @@
       }
 
       try {
-        let seconds = manifest.random ?
-          get_random_seconds(manifest.seconds) :
-          manifest.seconds
-        ;
-
-        $H.setTimeout(function () {
-          $H.call('Lanes#end_shipment', lane, exit_code, manifest);
-        }, seconds * 1000);
+        H.setTimeout(function () {
+          console.log(`Finished sleeping for ${
+            manifest.seconds
+          } seconds with exit code ${
+            exit_code
+          }`);
+          const shipment = Shipments.findOne(manifest.shipment_id);
+          if (shipment && shipment.exit_code) {
+            console.log(`Prior exit code found: ${shipment.exit_code}`);
+            exit_code = shipment.exit_code;
+          }
+          H.call('Lanes#end_shipment', lane, exit_code, manifest);
+        }, manifest.seconds * 1000);
 
       }
       catch (err) {
