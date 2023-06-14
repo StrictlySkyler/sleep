@@ -75,7 +75,7 @@
       }
 
       try {
-        H.setTimeout(function () {
+        setTimeout(function () {
           console.log(`Finished sleeping for ${
             manifest.seconds
           } seconds with exit code ${
